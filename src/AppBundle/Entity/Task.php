@@ -12,6 +12,21 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Task
 {
+    const STATUS_TODO = 'todo';
+
+    const STATUS_IN_PROGRESS = 'in_progress';
+
+    const STATUS_REVIEW = 'review';
+
+    const STATUS_DONE = 'done';
+
+    private static $supportedStatuses = [
+        self::STATUS_TODO,
+        self::STATUS_IN_PROGRESS,
+        self::STATUS_REVIEW,
+        self::STATUS_DONE,
+    ];
+
     /**
      * @var int
      *
@@ -48,6 +63,14 @@ class Task
      * @ORM\Column(name="archive_at", type="datetime", nullable=true)
      */
     private $archivedAt;
+
+    /**
+     * @return array
+     */
+    public static function getSupportedStatuses()
+    {
+        return self::$supportedStatuses;
+    }
 
     /**
      * Get id
@@ -92,6 +115,14 @@ class Task
      */
     public function setStatus($status)
     {
+        if (!in_array($status, self::$supportedStatuses)) {
+            throw new \InvalidArgumentException(sprintf(
+                'Status `%s` is not supported. Use one of: %s',
+                $status,
+                implode(', ', self::$supportedStatuses)
+            ));
+        }
+
         $this->status = $status;
 
         return $this;

@@ -1,0 +1,26 @@
+{% extends '::base.html.twig' %}
+{% block body %}
+    <h2>Tasks <a href="{{ path('task_list') }}">current</a> <a href="{{ path('task_list', {'archived': true}) }}">archive</a></h2>
+    <div class="tasks">
+    {% for status, tasks in taskGroups %}
+        <div class="column">
+            <div class="column-title">{{ status | trans }}</div>
+            {% for task in tasks %}
+                <div class="task">
+                    <a href="#">
+                        {{ task.title }}
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+    {% endfor %}
+    </div>
+    {% if totalPages is defined %}
+        Pages:
+        {% for page in 1..totalPages %}
+            {% if page != currentPage %}<a href="{{ path('task_list', {'archived': archived, 'page': page}) }}">{% endif %}
+                {{ page }}
+            {% if page != currentPage %}</a>{% endif %}
+        {% endfor  %}
+    {% endif %}
+{% endblock %}

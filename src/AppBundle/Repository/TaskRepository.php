@@ -2,6 +2,8 @@
 
 namespace AppBundle\Repository;
 
+use AppBundle\Entity\Task;
+
 /**
  * TaskRepository
  *
@@ -10,4 +12,41 @@ namespace AppBundle\Repository;
  */
 class TaskRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function findGrouped($archived = false, $limit = false, $offset = false)
+    {
+        $qb = $this->createQueryBuilder('t');
+        $method = ($archived) ? 'isNotNull' : 'isNull';
+        $qb->andWhere($qb->expr()->$method('t.archivedAt'));
+
+        if ($limit) {
+            $qb->setMaxResults($limit);
+        }
+
+        if ($offset) {
+            $qb->setFirstResult($offset);
+        }
+
+        $items = $qb->getQuery()->execute();
+        $groups = [];
+
+        foreach (Task::getSupportedStatuses() as $status) {
+            $groups[$status] = [];
+        }
+
+        foreach ($items as $item) {
+            /** @var Task $item */
+            $groups[$item->getStatus()][] = $item;
+        }
+
+        return $groups;
+    }
+
+    public function countArchived()
+    {
+        $qb = $this->createQueryBuilder('t');
+        $qb->select('COUNT(t)')
+           ->where($qb->expr()->isNotNull('t.archivedAt'));
+
+        return $qb->getQuery()->getSingleScalarResult();
+    }
 }
