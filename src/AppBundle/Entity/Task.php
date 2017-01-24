@@ -65,6 +65,14 @@ class Task
     private $archivedAt;
 
     /**
+     * Task constructor.
+     */
+    public function __construct()
+    {
+        $this->createdAt = new \DateTime();
+    }
+
+    /**
      * @return array
      */
     public static function getSupportedStatuses()

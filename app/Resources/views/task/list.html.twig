@@ -1,6 +1,10 @@
 {% extends '::base.html.twig' %}
 {% block body %}
-    <h2>Tasks <a href="{{ path('task_list') }}">current</a> <a href="{{ path('task_list', {'archived': true}) }}">archive</a></h2>
+    <h2>Tasks
+        <a href="{{ path('task_create') }}">add</a>
+        <a href="{{ path('task_list') }}">current</a>
+        <a href="{{ path('task_list', {'archived': true}) }}">archive</a>
+    </h2>
     <div class="tasks">
     {% for status, tasks in taskGroups %}
         <div class="column">

@@ -1,0 +1,10 @@
+{% extends '::base.html.twig' %}
+{% block body %}
+    <h2>Creating a task</h2>
+    <div class="form">
+        <form action="{{ path('task_create') }}" method="post">
+            {{ form_rest(form) }}
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+{% endblock %}
