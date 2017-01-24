@@ -4,6 +4,14 @@ parameters:
 #    parameter_name: value
 
 services:
-#    service_name:
-#        class: AppBundle\Directory\ClassName
-#        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]
+  app.command.handler.task_update:
+    class: 'AppBundle\Command\TaskUpdateHandler'
+    arguments:
+      - '@state_machine.task_management'
+      - '@doctrine.orm.default_entity_manager'
+  app.form.update_task:
+    class: 'AppBundle\Form\UpdateTaskType'
+    arguments:
+      - '@state_machine.task_management'
+    tags:
+      - { name: 'form.type' }

@@ -2,8 +2,10 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Command\TaskUpdateCommand;
 use AppBundle\Entity\Task;
 use AppBundle\Form\CreateTaskType;
+use AppBundle\Form\UpdateTaskType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -65,6 +67,33 @@ class TaskController extends Controller
 
         return $this->render('task/form.html.twig', [
             'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/edit/{id}", name="task_edit")
+     * @param Task    $task
+     * @param Request $request
+     * @return Response
+     */
+    public function editAction(Task $task, Request $request)
+    {
+        $form = $this->createForm(UpdateTaskType::class, new TaskUpdateCommand($task));
+
+        if ($request->getMethod() === 'POST') {
+            $form->handleRequest($request);
+
+            if ($form->isValid()) {
+                $handler = $this->get('app.command.handler.task_update');
+                $handler->handle($form->getData());
+
+                return $this->redirectToRoute('task_list');
+            }
+        }
+
+        return $this->render('task/form.html.twig', [
+            'form' => $form->createView(),
+            'task' => $task,
         ]);
     }
 }

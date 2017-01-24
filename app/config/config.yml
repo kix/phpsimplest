@@ -33,6 +33,39 @@ framework:
     assets: ~
     php_errors:
         log: true
+    workflows:
+        task_management:
+            type: 'state_machine'
+            marking_store:
+                type: 'single_state'
+                arguments:
+                    - 'status'
+            supports:
+                - 'AppBundle\Entity\Task'
+            places:
+                - 'todo'
+                - 'in_progress'
+                - 'review'
+                - 'done'
+            transitions:
+                to_review:
+                    from: 'in_progress'
+                    to:   'review'
+                start_progress:
+                    from: 'todo'
+                    to:   'in_progress'
+                stop_progress:
+                    from: 'in_progress'
+                    to:   'todo'
+                reopen:
+                    from: 'done'
+                    to:   'todo'
+                discard:
+                    from: 'review'
+                    to:   'todo'
+                complete:
+                    from: 'review'
+                    to:   'done'
 
 # Twig Configuration
 twig:

@@ -1,8 +1,16 @@
 {% extends '::base.html.twig' %}
 {% block body %}
+    {% if task is defined %}
+    <h2>Editing task {{ task.id }}</h2>
+    {% else %}
     <h2>Creating a task</h2>
+    {% endif %}
     <div class="form">
-        <form action="{{ path('task_create') }}" method="post">
+        <form action="{% if task is defined %}
+                        {{ path('task_edit', {'id': task.id}) }}
+                    {% else %}
+                        {{ path('task_create') }}
+                    {% endif %}" method="post">
             {{ form_rest(form) }}
             <button type="submit">Submit</button>
         </form>

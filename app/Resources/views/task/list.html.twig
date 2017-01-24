@@ -11,7 +11,7 @@
             <div class="column-title">{{ status | trans }}</div>
             {% for task in tasks %}
                 <div class="task">
-                    <a href="#">
+                    <a href="{{ path('task_edit', {'id': task.id}) }}">
                         {{ task.title }}
                     </a>
                 </div>
