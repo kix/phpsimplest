@@ -1,7 +1,7 @@
 {% extends '::base.html.twig' %}
 {% block body %}
     {% if task is defined %}
-    <h2>Editing task {{ task.id }}</h2>
+        <h2>Editing task {{ task.id }} <a href="{{ path('task_archive', {'id': task.id}) }}">archive</a></h2>
     {% else %}
     <h2>Creating a task</h2>
     {% endif %}

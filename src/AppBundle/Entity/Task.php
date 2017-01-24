@@ -171,17 +171,13 @@ class Task
     }
 
     /**
-     * Set archivedAt
-     *
-     * @param string $archivedAt
+     * Archive the task
      *
      * @return Task
      */
-    public function setArchivedAt($archivedAt)
+    public function archive()
     {
-        $this->archivedAt = $archivedAt;
-
-        return $this;
+        $this->archivedAt = new \DateTime('now');
     }
 
     /**

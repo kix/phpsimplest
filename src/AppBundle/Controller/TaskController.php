@@ -108,4 +108,20 @@ class TaskController extends Controller
 
         return new Response($serializer->serialize($tasks, 'json'), 200, ['Content-Type' => 'application/json']);
     }
+
+    /**
+     * @Route("/archive/{id}", name="task_archive")
+     * @param Task $task
+     * @return Response
+     */
+    public function archiveAction(Task $task)
+    {
+        $task->archive();
+
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($task);
+        $em->flush();
+
+        return $this->redirectToRoute('task_list');
+    }
 }
