@@ -25,7 +25,8 @@
     },
     "require-dev": {
         "sensio/generator-bundle": "^3.0",
-        "symfony/phpunit-bridge": "^3.0"
+        "symfony/phpunit-bridge": "^3.0",
+        "doctrine/doctrine-migrations-bundle": "@stable"
     },
     "scripts": {
         "symfony-scripts": [
