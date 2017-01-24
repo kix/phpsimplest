@@ -66,6 +66,8 @@ framework:
                 complete:
                     from: 'review'
                     to:   'done'
+    serializer:
+        enabled: true
 
 # Twig Configuration
 twig:

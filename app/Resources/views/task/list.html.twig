@@ -4,6 +4,7 @@
         <a href="{{ path('task_create') }}">add</a>
         <a href="{{ path('task_list') }}">current</a>
         <a href="{{ path('task_list', {'archived': true}) }}">archive</a>
+        <a href="{{ path('task_export') }}" target="_blank">export</a>
     </h2>
     <div class="tasks">
     {% for status, tasks in taskGroups %}

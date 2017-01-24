@@ -96,4 +96,16 @@ class TaskController extends Controller
             'task' => $task,
         ]);
     }
+
+    /**
+     * @Route("/export", name="task_export")
+     * @return Response
+     */
+    public function exportAction()
+    {
+        $tasks = $this->getDoctrine()->getRepository(Task::class)->findAll();
+        $serializer = $this->get('serializer');
+
+        return new Response($serializer->serialize($tasks, 'json'), 200, ['Content-Type' => 'application/json']);
+    }
 }
