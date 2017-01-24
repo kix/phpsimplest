@@ -15,3 +15,19 @@ services:
       - '@state_machine.task_management'
     tags:
       - { name: 'form.type' }
+  app.admin.setting:
+    class: 'AppBundle\Admin\SettingAdmin'
+    arguments: [~, 'AppBundle\Entity\Setting', ~]
+    tags:
+      - { name: 'sonata.admin', manager_type: orm, label: 'Settings' }
+  app.repository.setting:
+    class: 'AppBundle\Repository\SettingRepository'
+    factory: ['@doctrine.orm.default_entity_manager', 'getRepository']
+    arguments: ['AppBundle\Entity\Setting']
+  app.event_listener.task_done:
+    class: 'AppBundle\EventDispatcher\TaskDoneListener'
+    arguments:
+      - '@mailer'
+      - '@app.repository.setting'
+    tags:
+      - { name: 'kernel.event_listener', event: 'workflow.task_management.transition.complete', method: 'onTaskDone' }
